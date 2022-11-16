@@ -141,3 +141,206 @@ ide-helper:
 + `$ make create-project`を実行<br>
 
 + localhostにアクセスしてLaravelの初期画面が表示されればOK<br>
+
+### 1.5.1 Laravel Breezeのインストール
+
++ `$ docker compose exec app composer require laravel/breeze:1.10 --dev`を実行<br>
+
+### 1.5.2 php artisan breeze:install の実行
+
++ `$ docker compose exec app php artisan breeze:install`を実行<br>
+
+### LaravelからViteをアンインストール
+
++ `docker compose exec web npm remove vite`を実行<br>
+
++ `docker compose exec web npm remove laravel-vite-plugin`を実行<br>
+
++ `backend/vite.config.js`を削除<br>
+
++ `backend/resources/views/layouts/app.blade.php`を編集<br>
+
+```html:app.blade.php
+<!DOCTYPE html>
+<html lang="{{ str_replace('_', '-', app()->getLocale()) }}">
+
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta name="csrf-token" content="{{ csrf_token() }}">
+
+    <title>{{ config('app.name', 'Laravel') }}</title>
+
+    <!-- Fonts -->
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Nunito:wght@400;600;700&display=swap">
+
+    <!-- Styles -->
+    <link rel="stylesheet" href="{{ asset('css/app.css') }}">
+
+    <!-- Scripts -->
+    <script src="{{ asset('js/app.js') }}" defer></script>
+</head>
+
+<body class="font-sans antialiased">
+    <div class="min-h-screen bg-gray-100">
+        @include('layouts.navigation')
+
+        <!-- Page Heading -->
+        <header class="bg-white shadow">
+            <div class="max-w-7xl mx-auto py-6 px-4 sm:px-6 lg:px-8">
+                {{ $header }}
+            </div>
+        </header>
+
+        <!-- Page Content -->
+        <main>
+            {{ $slot }}
+        </main>
+    </div>
+</body>
+
+</html>
+```
+
++ `backend/resources/views/layouts/guest.blade.php`を編集<br>
+
+```html:guest.blade.php
+<!DOCTYPE html>
+<html lang="{{ str_replace('_', '-', app()->getLocale()) }}">
+
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta name="csrf-token" content="{{ csrf_token() }}">
+
+    <title>{{ config('app.name', 'Laravel') }}</title>
+
+    <!-- Fonts -->
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Nunito:wght@400;600;700&display=swap">
+
+    <!-- Styles -->
+    <link rel="stylesheet" href="{{ asset('css/app.css') }}">
+
+    <!-- Scripts -->
+    <script src="{{ asset('js/app.js') }}" defer></script>
+</head>
+
+<body>
+    <div class="font-sans text-gray-900 antialiased">
+        {{ $slot }}
+    </div>
+</body>
+
+</html>
+```
+
++ `backend/resources/app.js`を編集<br>
+
+```js:app.js
+require('./bootstrap')
+
+require('alpinejs')
+```
+
++ `$ docker compose exec web npm install laravel-mix --save-dev`(webbapck.mix.jsがない場合)を実行<br>
+
++ `backend/resources/css/app.css`を編集<br>
+
+```css:app.css
+@import 'tailwindcss/base';
+@import 'tailwindcss/components';
+@import 'tailwindcss/utilities';
+```
+
++ `backend/webpack.mix.js`を編集<br>
+
+```js:webpack.mix.js
+const mix = require('laravel-mix')
+
+/*
+ |--------------------------------------------------------------------------
+ | Mix Asset Management
+ |--------------------------------------------------------------------------
+ |
+ | Mix provides a clean, fluent API for defining some Webpack build steps
+ | for your Laravel applications. By default, we are compiling the CSS
+ | file for the application as well as bundling up all the JS files.
+ |
+ */
+
+mix
+  .js('resources/js/app.js', 'public/js')
+  .postCss('resources/css/app.css', 'public/css', [
+    require('postcss-import'),
+    require('tailwindcss'),
+    require('autoprefixer'),
+  ])
+
+mix.webpackConfig({
+  stats: {
+    children: true,
+  },
+})
+```
+
++ `backend/package.json`を編集<br>
+
+```json:package.json
+{
+    "private": true,
+    "scripts": {
+        "dev": "npm run development",
+        "development": "mix",
+        "watch": "mix watch",
+        "watch-poll": "mix watch -- --watch-options-poll=1000",
+        "hot": "mix watch --hot",
+        "prod": "npm run production",
+        "production": "mix --production"
+    },
+    "devDependencies": {
+        "@tailwindcss/forms": "^0.5.2",
+        "alpinejs": "^3.4.2",
+        "autoprefixer": "10.4.5", // 編集
+        "axios": "^0.21",
+        "laravel-mix": "^6.0.49",
+        "lodash": "^4.17.19",
+        "postcss": "^8.4.6",
+        "tailwindcss": "^3.1.0"
+    }
+}
+```
+
++ `backend/package.lock.json`を削除<br>
+
+### 1.5.3 Node.js関連モジュールのインストール
+
++ `$ docker compose exec web npm install`を実行<br>
+
++ `$ docker compose exec web npm run dev`を実行<br>
+
+### 1.5.4 .gitignoreの編集
+
++ `backend/.gitignore`を編集<br>
+
+```:.gitignore
+/node_modules
+/public/css
+/public/hot
+/public/js
+/public/mix-manifest.json
+/public/storage
+/storage/*.key
+/vendor
+.env
+.env.backup
+.phpunit.result.cache
+docker-compose.override.yml
+Homestead.json
+Homestead.yaml
+npm-debug.log
+yarn-error.log
+```
+
+### 1.5.6 認証機能の動作確認
+
++ localhostにアクセスし、ユーザー登録を実施してみる<br>
