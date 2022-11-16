@@ -1,9 +1,16 @@
+# 第1章: Laravelアプリケーションの作成
+
+## 1.4 DockerのビルドとLaravelのインストール
+
++ `Makefile`を編集(P04〜)<br>
+
+```:Makefile
 up:
 	docker-compose up -d
 build:
 	docker-compose build --no-cache --force-rm
 laravel-install:
-	docker-compose exec app composer create-project --prefer-dist "laravel/laravel=8.*" .
+	docker-compose exec app composer create-project --prefer-dist "laravel/laravel=8.*" . // 編集
 create-project:
 	mkdir backend
 	@make build
@@ -129,3 +136,8 @@ ide-helper:
 	docker-compose exec app php artisan ide-helper:generate
 	docker-compose exec app php artisan ide-helper:meta
 	docker-compose exec app php artisan ide-helper:models --nowrite
+```
+
++ `$ make create-project`を実行<br>
+
++ localhostにアクセスしてLaravelの初期画面が表示されればOK<br>
