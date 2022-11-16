@@ -344,3 +344,9 @@ yarn-error.log
 ### 1.5.6 認証機能の動作確認
 
 + localhostにアクセスし、ユーザー登録を実施してみる<br>
+
+## 1.6: 既存のGitHub Actionsのワークフローの削除
+
++ `.github/workflows/laravel-create-project.yml`を削除<br>
+
++ `.github/workflows/laravel-git-clone.yml`を削除<br>
