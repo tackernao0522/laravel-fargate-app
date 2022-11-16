@@ -350,3 +350,137 @@ yarn-error.log
 + `.github/workflows/laravel-create-project.yml`を削除<br>
 
 + `.github/workflows/laravel-git-clone.yml`を削除<br>
+
+# 第2章 Terraformのセットアップ(P09〜)
+
+## 2.2 Terraformのインストール
+
++ `$ brew install terraform`を実行<br>
+
+## 2.3 tfenvの利用
+
+### 2.3.1 tfenvを使う理由
+
+Terraform でインフラを一度新規構築した後、クライアントで使用する Terraform のバージョンを上げると、<br>
+Terraform の記法や利用できる機能が変わったことを理由として、作成済みの Terraform のコード (tf ファイル) を一部書き換える必要が出てくる場合があります。<br>
+そのため、一度構築したインフラは、いったんは新規構築時に使った Terraform のバージョンで保守することになります。<br>
+もし、利用する Terraform のバージョンを上げる際は、移行計画を別途立ててコードの書き換えを行うことになるかと思います。<br>
+つまり、クライアントでは常時最新バージョンの Terraform を使うのではなく、特定のバージョンに固定して使う必要があります。<br>
+一方で、複数プロジェクトで Terraform を使用している場合、プロジェクトごとに Terraform のバージョンは異なるでしょうから、クライアントで使用する Terraform は複数のバージョンから切り替えることができないと不便です。<br>
+そこで、tfenv をインストールします。<br>
+
+### 2.3.2 tfenvのインストール
+
++ `$ brew install tfenv`を実行<br>
+
+## 2.3.3 tfenvでインストール可能なTerraformバージョンnの確認
+
++ `$ tfenv list-remote`を実行<br>
+
+```:terminal
+1.4.0-alpha20221109
+1.3.4
+1.3.3
+1.3.2
+1.3.1
+1.3.0
+1.3.0-rc1
+1.3.0-beta1
+1.3.0-alpha20220817
+1.3.0-alpha20220803
+1.3.0-alpha20220706
+1.3.0-alpha20220622
+1.3.0-alpha20220608
+1.2.9
+1.2.8
+1.2.7
+1.2.6
+1.2.5
+1.2.4
+1.2.3
+1.2.2
+1.2.1
+1.2.0
+1.2.0-rc2
+1.2.0-rc1
+1.2.0-beta1
+1.2.0-alpha20220413
+1.2.0-alpha-20220328
+1.1.9
+1.1.8
+1.1.7
+1.1.6
+1.1.5
+1.1.4
+1.1.3
+1.1.2
+1.1.1
+1.1.0
+1.1.0-rc1
+1.1.0-beta2
+1.1.0-beta1
+1.1.0-alpha20211029
+1.1.0-alpha20211020
+1.1.0-alpha20211006
+1.1.0-alpha20210922
+1.1.0-alpha20210908
+1.1.0-alpha20210811
+1.1.0-alpha20210728
+1.1.0-alpha20210714
+1.1.0-alpha20210630
+1.1.0-alpha20210616
+1.0.11
+1.0.10
+1.0.9
+1.0.8
+1.0.7
+1.0.6
+1.0.5
+1.0.4
+1.0.3
+1.0.2
+1.0.1
+1.0.0
+0.15.5
+0.15.4
+0.15.3
+0.15.2
+0.15.1
+0.15.0
+0.15.0-rc2
+0.15.0-rc1
+0.15.0-beta2
+0.15.0-beta1
+0.15.0-alpha20210210
+0.15.0-alpha20210127
+0.15.0-alpha20210107
+...(省略)...
+```
+
+### 2.3.4 tfenvを使ったTerraformのインストール
+
++ `tfenv install 1.0.0`を実行<br>
+
+## 2.3.5 インストール済み及び使用中のバージョンの確認
+
++ `$ tfenv list`を実行<br>
+
+```:terminal
+  1.0.0
+No default set. Set with 'tfenv use <version>'
+```
+
+### 2.3.5 使用するバージョンの切り替え
+
++ `$ tfenv use 1.0.0`を実行<br>
+
+```:terminal
+Switching default version to v1.0.0
+Default version (when not overridden by .terraform-version or TFENV_TERRAFORM_VERSION) is now: 1.0.0
+```
+
++ `$ tfenv list`を実行<br>
+
+```:terminal
+* 1.0.0 (set by /usr/local/Cellar/tfenv/3.0.0/version)
+```
