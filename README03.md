@@ -145,3 +145,67 @@ secret_key     ****************Ml1r              env
 
 profile と書かれた行の Value 列の値が、先ほど作成したプロファイルの名前 (terraform 等) となっていれば問題ありません。<br>
 今後、本書で Terraform を使っていく中で、もしも権限不足などでエラーになっていると思われる時は、aws configure list コマンドを使って、正しいプロファイルを使用する設定になっているかどうかを確認するようにしてください。<br>
+
+## 2.5 tfstate 管理用の S3 バケットの作成(P19〜)
+
+Terraform では、インフラの最新の状態を tfstate と呼ばれるファイルで管理します。<br>
+この tfstate はデフォルトではローカルに保存されますが、チームで Terraform を扱う場合は、ローカルではなくチーム全員が参照・更新可能な場所に保存する必要があります。<br>
+
+読者の方は1人で本書のチュートリアルを進めていくでしょうから、tfstate をローカルに保存して進めることも可能かと思いますが、チーム開発などにも対応できるよう、tfstate を AWS のストレージサービスである S3 に保存していくようにします。<br>
+なお、今回対応は見送りますが、Terraform では複数人での tfstate の更新が競合しないよう、DynamoDB を使ってロックを行う*2こともできます。<br>
+
+`＊2` https://www.terraform.io/docs/language/settings/backends/s3.html%23dynamodb-state-locking <br>
+
+## 2.5.1 S3 バケットの作成(P20〜)
+
+S3 バケットは先ほど設定が完了した AWS CLI を使って数回のコマンドで作成することもできるのですが、ここではマネジメントコンソールから作成していくことにします。<br>
+
+## バケットの作成の選択
+
+ブラウザから AWS マネジメントコンソールの S3*3に移動し、「バケットの作成」を選択 してください。<br>
+
++ `＊3` https://s3.console.aws.amazon.com/s3/home?region=ap-northeast-1 <br>
+
+<img src="https://i.gyazo.com/578176c80319bd37701143b6d1a9e077.png" alt="iam_access_key" title="サンプル"> <br>
+
+## バケット名の入力とリーションの選択
+
+以下の画面が表示されるので、バケット名を入力し、リージョンを選択します。<br>
+
+<img src="https://i.gyazo.com/b9a20e8f9706ce6040395c770bfd8c03.png" alt="iam_access_key" title="サンプル"> <br>
+
+バケット名は、世界中で他と被らないユニークな名前にする必要があります。<br>
+画面例では、筆者の SNS などでのアカウント名を含めるようにして、shonansurvivors-tfstate としました。<br>
+読者の方は、何かユニークな名前-tfstate とするようにしてください。<br>
+リージョンについては、「アジアパシフィック (東京) ap-northeast-1」を選択してください。<br>
+
+## ブロックパブリックアクセスのバケット設定
+
+「パブリックアクセスをすべてブロック」はチェックをしたままとします。<br>
+
+<img src="https://i.gyazo.com/bda315c26de0f19966b18bdeb874176d.png" alt="iam_access_key" title="サンプル"> <br>
+
+## バージョニング
+
+「バケットのバージョニング」は「有効にする」を選択してください。<br>
+
+<img src="https://i.gyazo.com/49efb0c4246c2ca965a651b43eed7cc0.png" alt="iam_access_key" title="サンプル"> <br>
+
+バージョニング*4を有効化すると、S3 バケット内のオブジェクト (ファイル) を世代管理します。<br>
+バージョニングを設定しておくことで、tfstate を誤って削除したり更新したりしてしまった時のリカバリが可能となります。<br>
+
++ `＊4` https://docs.aws.amazon.com/ja_jp/AmazonS3/latest/dev/Versioning.html <br>
+
+## 暗号化
+
+「サーバー側の暗号化」は「有効にする」、「暗号化キータイプ」は「Amazon S3 キー (SSE-S3)」を選択してください。<br>
+
+<img src="https://i.gyazo.com/1daba7c9358994213366e6e70ba736d2.png" alt="iam_access_key" title="サンプル"> <br>
+
+## バケットの作成
+
+全ての入力が終わったら、「バケットを作成」を押してください。<br>
+
+<img src="https://i.gyazo.com/34af38878059e603b904eaa7a47d6e0f.png" alt="iam_access_key" title="サンプル"> <br>
+
+以上で本章は完了です。次の章では、Terraform を使って、AWS リソースを作成していきます。<br>
