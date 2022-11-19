@@ -484,3 +484,27 @@ Default version (when not overridden by .terraform-version or TFENV_TERRAFORM_VE
 ```:terminal
 * 1.0.0 (set by /usr/local/Cellar/tfenv/3.0.0/version)
 ```
+
+## 2.4: AWS CLIのインストールとプロファイルの設定(P12〜)
+
+### 2.4.1 AWS CLIのインストール
+
++ `$ aws --version`を実行<br>
+
+コマンド実行後、以下のようにバージョンが表示されれば、AWS CLI はインストール済みです。<br>
+
+```:terminal
+aws-cli/2.1.10 Python/3.9.1 Darwin/19.6.0 source/x86_64 prompt/off
+```
+
+もし、AWS CLI がインストールされていなければ、以下コマンドを実行してください。<br>
+
++ `$ brew install awscli`を実行<br>
+
+インストール完了後、以下のコマンドを実行してください。<br>
+
++ `$ aws --version`を実行<br>
+
+```:terminal
+aws-cli/2.8.12 Python/3.10.8 Darwin/19.6.0 source/x86_64 prompt/off
+```
