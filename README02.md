@@ -459,30 +459,30 @@ Terraform の記法や利用できる機能が変わったことを理由とし�
 
 ### 2.3.4 tfenvを使ったTerraformのインストール
 
-+ `tfenv install 1.0.0`を実行<br>
++ `tfenv install 1.3.4`を実行<br>
 
 ## 2.3.5 インストール済み及び使用中のバージョンの確認
 
 + `$ tfenv list`を実行<br>
 
 ```:terminal
-  1.0.0
+  1.3.4
 No default set. Set with 'tfenv use <version>'
 ```
 
 ### 2.3.5 使用するバージョンの切り替え
 
-+ `$ tfenv use 1.0.0`を実行<br>
++ `$ tfenv use 1.3.4`を実行<br>
 
 ```:terminal
-Switching default version to v1.0.0
-Default version (when not overridden by .terraform-version or TFENV_TERRAFORM_VERSION) is now: 1.0.0
+Switching default version to v1.3.4
+Default version (when not overridden by .terraform-version or TFENV_TERRAFORM_VERSION) is now: 1.3.4
 ```
 
 + `$ tfenv list`を実行<br>
 
 ```:terminal
-* 1.0.0 (set by /usr/local/Cellar/tfenv/3.0.0/version)
+* 1.3.4 (set by /usr/local/Cellar/tfenv/3.0.0/version)
 ```
 
 ## 2.4: AWS CLIのインストールとプロファイルの設定(P12〜)
