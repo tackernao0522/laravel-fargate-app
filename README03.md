@@ -51,6 +51,7 @@ AWS CLI を使うのが初めてであったり、プロファイルというも
 $ export AWS_ACCESS_KEY_ID=XXXXXXXXXXXXXXXXXXXX
 $ export AWS_SECRET_ACCESS_KEY=XXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX
 $ export AWS_REGION=ap-northeast-1
+$ export AWS_PROFILE=terraform
 ```
 
 もうひとつの設定方法であるプロファイルを利用する場合は、上記のような一連の設定に名前を付けて呼び出すことができます。<br>
